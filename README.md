@@ -1,7 +1,7 @@
 ﻿# FP_KKA_06_Checkers
 
 ```
-./venv/Include/activate
+./venv/Scripts/activate
 ```
 
 ```
