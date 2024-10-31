@@ -111,7 +111,7 @@ class Graph:
 class App:
     def __init__(self, root, graph):
         self.root = root
-        self.root.title("Bus Station Route Finder")
+        self.root.title("ITS Path Walk")
         self.graph = graph
         self.start = None
         self.goal = None
@@ -132,6 +132,10 @@ class App:
         self.draw_streets()
         self.draw_point()
         self.text_name()
+
+        # Highlighted cell variables
+        self.highlighted_cell = None
+        self.highlighted_cell_coords = None
 
         # User controls
         # Create OptionMenu for Start Point
@@ -167,6 +171,13 @@ class App:
         tk.Radiobutton(root, text="Uniform Cost Search", variable=self.algorithm_var, value="Uniform Cost Search").pack(side="left")
 
         tk.Button(root, text="Find Route", command=self.find_path).pack(side="left")
+
+        # Add mouse click event to highlight grid cell
+        self.canvas.bind("<Button-1>", self.highlight_cell)
+
+        # Label to show coordinates
+        self.coord_label = tk.Label(root, text="")
+        self.coord_label.pack(side="bottom")
 
     # def draw_grid(self):
     #     # Define grid dimensions
@@ -267,6 +278,25 @@ class App:
             color = "red" if obstacle else "white"
             self.canvas.create_line(from_coords, to_coords, fill=color, width=1)
 
+    def highlight_cell(self, event):
+        # Clear previous highlight
+        if self.highlighted_cell:
+            self.canvas.delete(self.highlighted_cell)
+
+        # Calculate grid cell based on click coordinates
+        x = event.x // self.cell_size
+        y = event.y // self.cell_size
+        
+        # Highlight the cell
+        x0 = x * self.cell_size
+        y0 = y * self.cell_size
+        x1 = (x + 1) * self.cell_size
+        y1 = (y + 1) * self.cell_size
+        self.highlighted_cell = self.canvas.create_rectangle(x0, y0, x1, y1, outline="white", width=2)
+        
+        # Store the coordinates and update label
+        self.highlighted_cell_coords = (x, y)
+        self.coord_label.config(text=f"Selected Cell: ({x}, {y})")
 
     def find_path(self):
         # Clear previous path lines
@@ -293,8 +323,8 @@ class App:
                 # Draw and store the line ID for the current path segment
                 line_id = self.canvas.create_line(from_loc.x, from_loc.y, to_loc.x, to_loc.y, fill="blue", width=2)
                 self.path_lines.append(line_id)
-            total_cost = total_distance * 2000
-            messagebox.showinfo("Route Finder", f"Distance: {total_distance:.2f} km\nCost: Rp{total_cost:.0f}")
+            total_cost = total_distance * 60
+            messagebox.showinfo("Route Finder", f"Jarak: {total_distance:.2f} km\nKalori: {total_cost:.0f} kal")
         else:
             messagebox.showinfo("Route Finder", "No path found")
 
