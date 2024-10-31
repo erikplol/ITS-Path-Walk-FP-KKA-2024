@@ -212,22 +212,36 @@ class Board:
 class CheckersGame:
     def __init__(self, win):
         self.board = Board()  # Initialize the Board
-        if self.board is None:
-            raise Exception("Board initialization failed.")
         self.turn = RED
         self.selected_piece = None
         self.valid_moves = {}
         self.win = win
+        self.game_over = False  # New attribute to track game-over state
 
     def update(self):
-        self.board.draw(self.win)
-        self.draw_valid_moves(self.valid_moves)
+            self.board.draw(self.win)
+            self.draw_valid_moves(self.valid_moves)
+            
+            # Check for game-over
+            winner = self.board.winner()
+            if winner:
+                self.display_winner(winner)
+                self.game_over = True  # Set game over state
+            pygame.display.update()
+
+    def display_winner(self, winner):
+        font = pygame.font.Font(None, 74)
+        text = font.render("Game Over! " + ("White" if winner == WHITE else "Red") + " Wins!", True, BLUE)
+        self.win.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
         pygame.display.update()
+        pygame.time.delay(3000)
 
     def reset(self):
         self.__init__(self.win)
 
     def select(self, row, col):
+        if self.game_over:  # Prevent actions after game over
+            return False
         piece = self.board.get_piece(row, col)
         if self.selected_piece:
             if (row, col) in self.valid_moves:
@@ -252,6 +266,12 @@ class CheckersGame:
             self.change_turn()
         self.selected_piece = None
         self.valid_moves = {}
+
+    def ai_move(self):
+        if not self.game_over:  # Only move if the game is not over
+            _, new_board = self.minimax(self.board, 3, WHITE)  # Depth 3
+            self.board = new_board
+            self.change_turn()
 
     def draw_valid_moves(self, moves):
         for move in moves:
@@ -308,17 +328,11 @@ def main():
     clock = pygame.time.Clock()
     game = CheckersGame(win)
 
-    # Check if board initializes successfully
-    if game.board is None:
-        print("Board initialization failed in main()")
-    else:
-        print("Board initialized successfully in main()")
-
     run = True
     while run:
         clock.tick(FPS)
 
-        if game.turn == WHITE:  # AI turn
+        if game.turn == WHITE and not game.game_over:  # AI turn only if game is not over
             game.ai_move()
 
         for event in pygame.event.get():
@@ -326,7 +340,7 @@ def main():
                 run = False
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if game.turn == RED:  # Player's turn
+                if game.turn == RED and not game.game_over:  # Player's turn only if game is not over
                     pos = pygame.mouse.get_pos()
                     row, col = pos[1] // SQUARE_SIZE, pos[0] // SQUARE_SIZE
                     game.select(row, col)
