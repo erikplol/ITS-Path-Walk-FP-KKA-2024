@@ -1,1 +1,0 @@
-# ITS-Path-Walk-FP-KKA-2024
