@@ -122,11 +122,11 @@ class App:
         self.canvas.pack()
 
         # Load background image
-        self.background_image = tk.PhotoImage(file="map_its.png")  # Adjust the path to your image
+        self.background_image = tk.PhotoImage(file="map_its.png") 
         self.canvas.create_image(0, 0, anchor="nw", image=self.background_image)
 
         self.grid_size = 3
-        self.cell_size = 3  # Each cell in pixels (adjust this based on your scaling)
+        self.cell_size = 3 
         # self.draw_grid()
         self.place_stations_and_stops()
         self.draw_streets()
@@ -145,10 +145,10 @@ class App:
         # Filter locations that are digits
         valid_locations_start = [loc for loc in self.graph.locations.keys() if not loc.isdigit()]
         # valid_locations_start = [loc for loc in self.graph.locations.keys()]
-        if valid_locations_start:  # Check if there are any valid locations
-            self.start_var.set(valid_locations_start[0])  # Set the first valid location as the default value
+        if valid_locations_start: 
+            self.start_var.set(valid_locations_start[0])  
         else:
-            self.start_var.set("")  # Or set to an empty string if there are no valid options
+            self.start_var.set("")
 
         tk.OptionMenu(root, self.start_var, *valid_locations_start).pack(side="left")
 
@@ -160,9 +160,9 @@ class App:
         valid_locations_goal = [loc for loc in self.graph.locations.keys() if not loc.isdigit()]
         # valid_locations_goal = [loc for loc in self.graph.locations.keys()]
         if valid_locations_goal:
-            self.goal_var.set(valid_locations_goal[0])  # Set the first valid location as the default value
+            self.goal_var.set(valid_locations_goal[0])
         else:
-            self.goal_var.set("")  # Or set to an empty string if there are no valid options
+            self.goal_var.set("") 
 
         tk.OptionMenu(root, self.goal_var, *valid_locations_goal).pack(side="left")
 
@@ -181,9 +181,9 @@ class App:
 
     # def draw_grid(self):
     #     # Define grid dimensions
-    #     grid_width = 1000  # in meters
-    #     grid_height = 1600  # in meters
-    #     cell_size = 1 # in meters
+    #     grid_width = 1000 
+    #     grid_height = 1600 
+    #     cell_size = 1
 
     #     # Calculate the number of cells in each direction
     #     num_cols = grid_width // cell_size
@@ -229,6 +229,35 @@ class App:
             ("8",140,151),
             ("9",77,143),
             ("10",98,132),
+            ("Vokasi",49,131),
+            ("11",43,147),
+            ("Graha ITS",14,144),
+            ("PWK",79,99),
+            ("Geofisika",91,98),
+            ("Geomatika",90,92),
+            ("Geomatika",90,92),
+            ("FDKBD",72,51),
+            ("FDKBD",72,51),
+            ("12",64,55),
+            ("13",76,77),
+            ("FKK",102,78),
+            ("14",75,33),
+            ("15",140,24),
+            ("16",212,70),
+            ("17",156,115),
+            ("18",156,85),
+            ("Sistem Informasi",107,56),
+            ("Perpustakaan",124,78),
+            ("FTK",141,59),
+            ("Transportasi Laut",149,27),
+            ("Teknik Industri",174,48),
+            ("Teknik Material",201,56),
+            ("Tower 2",197,92),
+            ("Tower1 & FSAD",181,124),
+            ("FTIRS",175,96),
+            ("Biologi",200,128),
+            ("Danau 8",226,99),
+            ("Research Center",121,44),
         ]
         for name, x, y in self.locations:
             x_coord, y_coord = x * self.cell_size, y * self.cell_size
@@ -236,8 +265,8 @@ class App:
     
     def draw_point(self):
         for name, x, y in self.locations:
-            # if(name.isdigit()):
-            #     continue
+            if(name.isdigit()):
+                continue
             x_coord, y_coord = x * self.cell_size, y * self.cell_size
             self.graph.add_location(Location(name, x_coord, y_coord))
             color = "red" if not name.isdigit() else "white"
@@ -246,13 +275,11 @@ class App:
     def text_name(self):
         for name, x, y in self.locations:
             x_coord, y_coord = x * self.cell_size, y * self.cell_size
-            # if(name.isdigit()):
-            #     continue
-            # Draw the stroke (outline) by layering text in different positions
-            stroke_color = "black"  # Color for the stroke
-            stroke_offset = 1  # Offset for the stroke
-
-            # Draw stroke (outline)
+            if(name.isdigit()):
+                continue
+            # Draw the stroke (outline)
+            stroke_color = "black" 
+            stroke_offset = 1 
             self.canvas.create_text(x_coord + stroke_offset, y_coord - 10 + stroke_offset, text=name, font=("Arial", 10), fill=stroke_color)
             self.canvas.create_text(x_coord - stroke_offset, y_coord - 10 + stroke_offset, text=name, font=("Arial", 10), fill=stroke_color)
             self.canvas.create_text(x_coord + stroke_offset, y_coord - 10 - stroke_offset, text=name, font=("Arial", 10), fill=stroke_color)
@@ -266,9 +293,86 @@ class App:
             ("Robotics Center", "1"),
             ("1", "Informatika"),
             ("Informatika", "2"),
-            ("2", "3"),
+            ("2", "15"),
+            ("3", "15"),
             ("3", "Blok U"),
             ("Blok U", "4"),
+            ("4","16"),
+            ("16","6"),
+            ("6","5"),
+            ("5","Badminton"),
+            ("Badminton","Asrama"),
+            ("Asrama","Gerbang Keputih"),
+            ("5","Basket"),
+            ("Basket","FASOR"),
+            ("FASOR","Voli"),
+            ("Voli","7"),
+            ("7","8"),
+            ("8","Manarul"),
+            ("Manarul","10"),
+            ("10","Sipil"),
+            ("Manarul","Gerbang Utama"),
+            ("Gerbang Utama","9"),
+            ("9","Lingkungan"),
+            ("Lingkungan","Sipil"),
+            ("Sipil","Arsitek"),
+            ("Arsitek","Rektorat"),
+            ("Rektorat","Plaza Dr.Angka"),
+            ("Plaza Dr.Angka","Global Kampoeng"),
+            ("Gerbang Robotik","Robotics Center"),
+            ("7","SCC"),
+            ("SCC","Rektorat"),
+            ("SCC","Plaza Dr.Angka"),
+            ("9","Vokasi"),
+            ("Vokasi","11"),
+            ("11","Graha ITS"),
+            ("Sipil","Geofisika"),
+            ("Arsitek","Geofisika"),
+            ("PWK","Geofisika"),
+            ("Geofisika","Geomatika"),
+            ("PWK","Geomatika"),
+            ("Geomatika","13"),
+            ("13","12"),
+            ("12","FDKBD"),
+            ("12","Robotics Center"),
+            ("14","Robotics Center"),
+            ("14","1"),
+            ("14","FKK"),
+            ("FKK","Sistem Informasi"),
+            ("Perpustakaan","Sistem Informasi"),
+            ("Perpustakaan","FKK"),
+            ("Perpustakaan","FTK"),
+            ("Perpustakaan","Rektorat"),
+            ("15","Transportasi Laut"),
+            ("FTK","Teknik Industri"),
+            ("Teknik Material","Teknik Industri"),
+            ("16","Teknik Material"),
+            ("6","Tower 2"),
+            ("6","Danau 8"),
+            ("Tower1 & FSAD","Biologi"),
+            ("5","Biologi"),
+            ("Basket","Tower1 & FSAD"),
+            ("FASOR","Tower1 & FSAD"),
+            ("FTIRS","Tower1 & FSAD"),
+            ("17","FTIRS"),
+            ("17","Tower1 & FSAD"),
+            ("17","Global Kampoeng"),
+            ("18","Global Kampoeng"),
+            ("17","SCC"),
+            ("FTIRS","Tower 2"),
+            ("18","FTIRS"),
+            ("18","FTK"),
+            ("FKK","Geomatika"),
+            ("FTK","2"),
+            ("FTK","Research Center"),
+            ("2","Research Center"),
+            ("Informatika","Research Center"),
+            ("Sistem Informasi","Research Center"),
+            ("Sistem Informasi","Informatika"),
+            ("FDKBD","Informatika"),
+            ("FDKBD","14"),
+            ("Manarul","SCC"),
+            ("Manarul","Arsitek"),
         ]
         for from_loc, to_loc, *obstacle in paths:
             obstacle = obstacle[0] if obstacle else False
@@ -318,13 +422,15 @@ class App:
             for i in range(len(path) - 1):
                 from_loc = self.graph.locations[path[i]]
                 to_loc = self.graph.locations[path[i + 1]]
-                distance = from_loc.distance_to(to_loc) / 550  # Calculate distance in km
+                distance = from_loc.distance_to(to_loc) / 550 
                 total_distance += distance
                 # Draw and store the line ID for the current path segment
                 line_id = self.canvas.create_line(from_loc.x, from_loc.y, to_loc.x, to_loc.y, fill="blue", width=2)
                 self.path_lines.append(line_id)
-            total_cost = total_distance * 60
-            messagebox.showinfo("Route Finder", f"Jarak: {total_distance:.2f} km\nKalori: {total_cost:.0f} kal")
+            total_cal = total_distance * 60
+            time_taken = total_distance * 15
+            sec = (time_taken % int(time_taken)) * 60
+            messagebox.showinfo("Route Finder", f"Jarak: {total_distance:.2f} km\nKalori: {total_cal:.0f} kal\nWaktu tempuh: {time_taken:.0f} menit {sec:.0f} detik")
         else:
             messagebox.showinfo("Route Finder", "No path found")
 
